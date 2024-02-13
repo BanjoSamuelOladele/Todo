@@ -44,8 +44,14 @@ describe("Test Todo", function(){
             const {createTodo, getTodoById} = await loadFixture(deployTodo);
             await createTodo("String", "Stringing");
             const result = await getTodoById(1);
-            console.log(result, "resulting...")
             assert.equal(result.title, "String");
+        })
+        it("when i create the Todo and i pass the id, i should get a response not null", async function(){
+            const {createTodo, getTodoById} = await loadFixture(deployTodo);
+            await createTodo("String", "Stringing");
+            await createTodo("Jump", "Jumping");
+            const result = await getTodoById(2);
+            assert.equal(result.description, "Jumping");
         })
     })
 })
