@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.9;
+import "./ITodo.sol";
 
 contract TodoImpl is ITodo{
 
@@ -71,5 +72,8 @@ contract TodoImpl is ITodo{
         todo.description = newDescription;
         todos[location] = todo;
         emit DisplayMessage("Description successfully updated...");
+    }
+    function getAllNumberTodos() external view virtual override returns(uint){
+        return todos.length;
     }
 }

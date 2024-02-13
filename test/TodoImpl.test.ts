@@ -8,32 +8,34 @@ describe("Test Todo", function(){
         const TodoImpl = await ethers.getContractFactory("TodoImpl");
         const todoImpl = await TodoImpl.deploy();
 
-        const {createTodo, getNumberOfTodos, getTodoById } = await ethers.getContractAt("ITodo", todoImpl);
-        return {createTodo, getNumberOfTodos, getTodoById};
+        const {createTodo, getAllTodos, getTodoById, getAllNumberTodos } = await ethers.getContractAt("ITodo", todoImpl);
+        return {createTodo, getAllTodos, getTodoById, getAllNumberTodos};
     }
     describe("test create Todo", function(){
         it("when i create one todo i should get 1 when i try to get the number of the Todos", async function(){
-            const{createTodo, getNumberOfTodos} = await loadFixture(deployTodo);
+            const{createTodo, getAllNumberTodos} = await loadFixture(deployTodo);
             await createTodo("Jump", "i am jumping");
-            const result = await getNumberOfTodos();
+            const result = await getAllNumberTodos();
             expect(result).is.equal(1);
         }),
+
         it("when i create more than one Todo i get my result to be more than 1", async function(){
-            const{createTodo, getNumberOfTodos} = await loadFixture(deployTodo);
+            const{createTodo, getAllNumberTodos} = await loadFixture(deployTodo);
             await createTodo("Jump", "i am jumping");
             await createTodo("Run", "i am running");
-            const result = await getNumberOfTodos();
+            const result = await getAllNumberTodos();
             expect(result).is.equal(2);
         }),
+
         it("assert that when creating a todo, no duplicate title is allowed", async function(){
-            const {createTodo, getNumberOfTodos} = await loadFixture(deployTodo);
+            const {createTodo, getAllNumberTodos} = await loadFixture(deployTodo);
             await createTodo("Jump", "i am jumping");
             try{
             await createTodo("Jump", "I am humming");
             }catch(error){
                 expect(error.message).to.include("a title with this title already exist...");
             }
-            const result = await getNumberOfTodos();
+            const result = await getAllNumberTodos();
             expect(result).is.equal(1);
         })
     }),
@@ -41,7 +43,9 @@ describe("Test Todo", function(){
         it("when i create the Todo and i pass the id, i should get a response not null", async function(){
             const {createTodo, getTodoById} = await loadFixture(deployTodo);
             await createTodo("String", "Stringing");
-            
+            const result = await getTodoById(1);
+            console.log(result, "resulting...")
+            assert.equal(result.title, "String");
         })
     })
-});
+})
