@@ -10,14 +10,6 @@ describe("Test Todo", function(){
         const {createTodo, getNumberOfTodos} = await ethers.getContractAt("ITodo", todoImpl);
         return {createTodo, getNumberOfTodos};
     }
-
-    // describe("test deployed", function(){
-    //     it("", async function(){
-    //         const{todo} = await loadFixture(deployTodo);
-    //         assert.isNotNull(todo);
-    //     })
-    // })
-
     describe("test create Todo", function(){
         it("when i create one todo i should get 1 when i try to get the number of the Todos", async function(){
             const{createTodo, getNumberOfTodos} = await loadFixture(deployTodo);
@@ -31,6 +23,11 @@ describe("Test Todo", function(){
             await createTodo("Run", "i am running");
             const result = await getNumberOfTodos();
             expect(result).is.equal(2);
+        })
+    }),
+    describe("", function(){
+        it("", async function(){
+            
         })
     })
 });
