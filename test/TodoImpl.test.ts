@@ -8,8 +8,8 @@ describe("Test Todo", function(){
         const TodoImpl = await ethers.getContractFactory("TodoImpl");
         const todoImpl = await TodoImpl.deploy();
 
-        const {createTodo, getAllTodos, getTodoById, getAllNumberTodos } = await ethers.getContractAt("ITodo", todoImpl);
-        return {createTodo, getAllTodos, getTodoById, getAllNumberTodos};
+        const {createTodo, getAllTodos, getTodoById, getAllNumberTodos, updateTodoTitleById, isDone, deleteTodoById, updateTodoDescriptionById } = await ethers.getContractAt("ITodo", todoImpl);
+        return {createTodo, getAllTodos, getTodoById, getAllNumberTodos, updateTodoTitleById, isDone, deleteTodoById, updateTodoDescriptionById};
     }
     describe("test create Todo", function(){
         it("when i create one todo i should get 1 when i try to get the number of the Todos", async function(){
@@ -52,6 +52,24 @@ describe("Test Todo", function(){
             await createTodo("Jump", "Jumping");
             const result = await getTodoById(2);
             assert.equal(result.description, "Jumping");
+        })
+    }),
+    describe("Update Todo by id", function(){
+        it("update title by id", async function (){
+            const {createTodo, getTodoById, updateTodoTitleById} = await loadFixture(deployTodo);
+            await createTodo("Sleep", "I want to take a nap");
+            await updateTodoTitleById("Nap", 1);
+            const result = await getTodoById(1);
+
+            assert.equal(result.title, "Nap");
+        })
+        it("update description by id", async function (){
+            const {createTodo, getTodoById, updateTodoDescriptionById} = await loadFixture(deployTodo);
+            await createTodo("Sleep", "I want to take a nap");
+            await updateTodoDescriptionById("fast asleep", 1);
+            const result = await getTodoById(1);
+
+            assert.equal(result.description, "fast asleep");
         })
     })
 })
