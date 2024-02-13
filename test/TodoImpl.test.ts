@@ -1,5 +1,6 @@
 import { ethers } from "hardhat";
 import {assert, expect} from "chai";
+import{anyValue} from "@nomicfoundation/hardhat-chai-matchers/withArgs";
 import {loadFixture} from "@nomicfoundation/hardhat-toolbox/network-helpers";
 
 describe("Test Todo", function(){
@@ -7,8 +8,8 @@ describe("Test Todo", function(){
         const TodoImpl = await ethers.getContractFactory("TodoImpl");
         const todoImpl = await TodoImpl.deploy();
 
-        const {createTodo, getNumberOfTodos} = await ethers.getContractAt("ITodo", todoImpl);
-        return {createTodo, getNumberOfTodos};
+        const {createTodo, getNumberOfTodos, getTodoById } = await ethers.getContractAt("ITodo", todoImpl);
+        return {createTodo, getNumberOfTodos, getTodoById};
     }
     describe("test create Todo", function(){
         it("when i create one todo i should get 1 when i try to get the number of the Todos", async function(){
@@ -17,7 +18,7 @@ describe("Test Todo", function(){
             const result = await getNumberOfTodos();
             expect(result).is.equal(1);
         }),
-        it("", async function(){
+        it("when i create more than one Todo i get my result to be more than 1", async function(){
             const{createTodo, getNumberOfTodos} = await loadFixture(deployTodo);
             await createTodo("Jump", "i am jumping");
             await createTodo("Run", "i am running");
@@ -36,9 +37,11 @@ describe("Test Todo", function(){
             expect(result).is.equal(1);
         })
     }),
-    describe("", function(){
-        it("", async function(){
-
+    describe("get Todo by Id", function(){
+        it("when i create the Todo and i pass the id, i should get a response not null", async function(){
+            const {createTodo, getTodoById} = await loadFixture(deployTodo);
+            await createTodo("String", "Stringing");
+            
         })
     })
 });
