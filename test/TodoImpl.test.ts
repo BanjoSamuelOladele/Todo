@@ -7,16 +7,30 @@ describe("Test Todo", function(){
         const TodoImpl = await ethers.getContractFactory("TodoImpl");
         const todoImpl = await TodoImpl.deploy();
 
-        const todo = await ethers.getContractAt("ITodo", todoImpl);
-        return {todo};
+        const {createTodo, getNumberOfTodos} = await ethers.getContractAt("ITodo", todoImpl);
+        return {createTodo, getNumberOfTodos};
     }
 
-    describe("test deployed", function(){
+    // describe("test deployed", function(){
+    //     it("", async function(){
+    //         const{todo} = await loadFixture(deployTodo);
+    //         assert.isNotNull(todo);
+    //     })
+    // })
+
+    describe("test create Todo", function(){
+        it("when i create one todo i should get 1 when i try to get the number of the Todos", async function(){
+            const{createTodo, getNumberOfTodos} = await loadFixture(deployTodo);
+            await createTodo("Jump", "i am jumping");
+            const result = await getNumberOfTodos();
+            expect(result).is.equal(1);
+        }),
         it("", async function(){
-            const{todo} = await loadFixture(deployTodo);
-            assert.isNotNull(todo);
+            const{createTodo, getNumberOfTodos} = await loadFixture(deployTodo);
+            await createTodo("Jump", "i am jumping");
+            await createTodo("Run", "i am running");
+            const result = await getNumberOfTodos();
+            expect(result).is.equal(2);
         })
     })
-
-    
 });
