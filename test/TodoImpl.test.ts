@@ -23,11 +23,22 @@ describe("Test Todo", function(){
             await createTodo("Run", "i am running");
             const result = await getNumberOfTodos();
             expect(result).is.equal(2);
+        }),
+        it("assert that when creating a todo, no duplicate title is allowed", async function(){
+            const {createTodo, getNumberOfTodos} = await loadFixture(deployTodo);
+            await createTodo("Jump", "i am jumping");
+            try{
+            await createTodo("Jump", "I am humming");
+            }catch(error){
+                expect(error.message).to.include("a title with this title already exist...");
+            }
+            const result = await getNumberOfTodos();
+            expect(result).is.equal(1);
         })
     }),
     describe("", function(){
         it("", async function(){
-            
+
         })
     })
 });
