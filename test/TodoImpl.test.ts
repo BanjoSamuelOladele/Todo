@@ -96,9 +96,13 @@ describe("Test Todo", function(){
             expect(result).is.equal(2);
         })
     }),
-    describe("", function(){
-        it("", async function() {
-            
+    describe("update the isDone", function(){
+        it("when i call on the isDone function, it changes the state of the isDone... the default value is false.", async function() {
+            const {createTodo, isDone, getTodoById} = await loadFixture(deployTodo);
+            await createTodo("Market", "Buy Fish");
+            await isDone(1);
+            const result = getTodoById(1);
+            assert.equal((await result).isDone, true);
         })
     })
 })
