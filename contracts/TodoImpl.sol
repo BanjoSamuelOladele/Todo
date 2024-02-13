@@ -15,9 +15,13 @@ contract TodoImpl is ITodo{
         Todo memory todo;
         todo.title = title;
         todo.description = description;
-        todo.id = todos.length + 1;
+        todo.id = generateId();
         todos.push(todo);
         emit DisplayMessage("Created successfully...");
+    }
+
+    function generateId() private view returns (uint){
+        return todos.length + 1;
     }
 
     function checkIfTodoTitleExist(string memory title) private view   {

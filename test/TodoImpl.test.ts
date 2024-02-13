@@ -1,6 +1,5 @@
 import { ethers } from "hardhat";
 import {assert, expect} from "chai";
-import{anyValue} from "@nomicfoundation/hardhat-chai-matchers/withArgs";
 import {loadFixture} from "@nomicfoundation/hardhat-toolbox/network-helpers";
 
 describe("Test Todo", function(){
@@ -8,7 +7,9 @@ describe("Test Todo", function(){
         const TodoImpl = await ethers.getContractFactory("TodoImpl");
         const todoImpl = await TodoImpl.deploy();
 
-        const {createTodo, getAllTodos, getTodoById, getAllNumberTodos, updateTodoTitleById, isDone, deleteTodoById, updateTodoDescriptionById } = await ethers.getContractAt("ITodo", todoImpl);
+        const {createTodo, getAllTodos, getTodoById, 
+               getAllNumberTodos, updateTodoTitleById, 
+               isDone, deleteTodoById, updateTodoDescriptionById } = await ethers.getContractAt("ITodo", todoImpl);
         return {createTodo, getAllTodos, getTodoById, getAllNumberTodos, updateTodoTitleById, isDone, deleteTodoById, updateTodoDescriptionById};
     }
     describe("test create Todo", function(){
@@ -71,5 +72,20 @@ describe("Test Todo", function(){
 
             assert.equal(result.description, "fast asleep");
         })
+    }),
+    describe("delete Todo by id", function (){
+        it("when i delete the only Todo in my list, when i check the numbers of Todos, i should get 0", async function(){
+            const{createTodo, getAllNumberTodos, deleteTodoById, getTodoById} = await loadFixture(deployTodo);
+            await createTodo("Market", "Buy Meat");
+            await deleteTodoById(1);
+            const result = await getAllNumberTodos();
+            expect(result).is.equal(0);
+            try{
+                await getTodoById(1);
+            }catch(error){
+                expect(error.message).to.include("could not locate a Todo with the provided id...");
+            }
+        })
+        // it()
     })
 })
