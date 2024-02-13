@@ -86,6 +86,19 @@ describe("Test Todo", function(){
                 expect(error.message).to.include("could not locate a Todo with the provided id...");
             }
         })
-        // it()
+        it("when i delete the one of the Todos in my list, i can check that the number of Todos lesser", async function(){
+            const {createTodo, getAllNumberTodos, deleteTodoById} = await loadFixture(deployTodo);
+            await createTodo("Market", "Buy Fish");
+            await createTodo("Read", "Theraja Theraja");
+            await createTodo("Sleep", "Go to bed by 19:00");
+            await deleteTodoById(1);
+            const result = await getAllNumberTodos();
+            expect(result).is.equal(2);
+        })
+    }),
+    describe("", function(){
+        it("", async function() {
+            
+        })
     })
 })
